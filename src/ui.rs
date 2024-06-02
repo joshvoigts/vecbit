@@ -13,9 +13,6 @@ use actix_session::Session;
 use actix_web::dev::ConnectionInfo;
 use actix_web::{web, Responder};
 use tera::Context;
-use time::{Duration, OffsetDateTime};
-
-const SESSION_TTL: Duration = Duration::new(60 * 60 * 24 * 30 * 3, 0);
 
 pub async fn post_start(
    data: web::Data<AppData>,
@@ -80,7 +77,6 @@ pub async fn get_login(
 
    let token = Token {
       id: sess_token,
-      expiry: OffsetDateTime::now_utc() + SESSION_TTL,
       user_id: db_user.id,
    };
    db::add_token(&conn, &token)?;
@@ -137,9 +133,3 @@ pub async fn get_user(
    context.insert("bools", &bools);
    Ok(Html(data.tera.render("site/user.html", &context)?))
 }
-
-// fn sget(session: &Session, key: &str) -> Result<String, UserError> {
-//    session.get(key)?.ok_or(UserError::InternalError(
-//       "could not get cookie token".to_string(),
-//    ))
-// }

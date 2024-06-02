@@ -39,7 +39,6 @@ pub fn init_db() {
 
          CREATE TABLE token (
             id TEXT PRIMARY KEY,
-            expiry TEXT NOT NULL,
             user_id INTEGER NOT NULL REFERENCES user
          );
          COMMIT;",

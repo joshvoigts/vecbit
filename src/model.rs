@@ -1,5 +1,4 @@
 use serde::{Deserialize, Serialize};
-use time::OffsetDateTime;
 
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
@@ -22,6 +21,5 @@ pub struct User {
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct Token {
    pub id: String,
-   pub expiry: OffsetDateTime,
    pub user_id: usize,
 }

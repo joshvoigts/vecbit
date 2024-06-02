@@ -1,4 +1,4 @@
-#![cfg_attr(debug_assertions, allow(dead_code, unused_imports))]
+// #![cfg_attr(debug_assertions, allow(dead_code, unused_imports))]
 
 use crate::config::AppConfig;
 use actix_files::Files;
@@ -33,7 +33,7 @@ async fn main() -> io::Result<()> {
 
    let tera = Tera::new("web/templates/**/*.html")
       .expect("Failed to render templates");
-   app::build_static(&tera);
+   // app::build_static(&tera);
 
    let args: Vec<String> = env::args().skip(1).collect();
    for (i, arg) in args.iter().enumerate() {

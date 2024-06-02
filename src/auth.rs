@@ -10,13 +10,6 @@ use aes_gcm::{
    aead::{Aead, AeadCore, KeyInit, OsRng},
    Aes256Gcm,
 };
-// use argon2::{
-//    password_hash::{
-//       PasswordHasher,
-//       SaltString,
-//    },
-//    Argon2,
-// };
 use base64::{engine::general_purpose::URL_SAFE, Engine as _};
 use db::Connection;
 use mail_builder::MessageBuilder;
@@ -47,19 +40,6 @@ pub fn generate_token(length: usize) -> String {
       .map(char::from)
       .collect()
 }
-
-// pub fn hash_token(
-//    token: &String,
-//    salt: &String,
-// ) -> Result<String, UserError> {
-//    let salt_str = SaltString::from_b64(salt)?;
-//    let argon2 = Argon2::default();
-//    let hashed = argon2.hash_password(token.as_bytes(), &salt_str);
-//    Ok(hashed?.to_string())
-// }
-
-const LINK_HTML_TEMPLATE: &str =
-   "<h3>Click the link to login:</h3><a href=\"{}\">{}</a>";
 
 pub async fn send_magic_email(
    email: &str,

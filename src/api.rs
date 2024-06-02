@@ -52,8 +52,6 @@ pub async fn get_bools(
    Ok(HttpResponse::Ok().json(bools))
 }
 
-const BAD_BOOL_ERROR: &str = "expected true, false, 1, or 0";
-
 pub async fn put_bool(
    data: web::Data<AppData>,
    path: web::Path<(usize, usize)>,
@@ -62,16 +60,10 @@ pub async fn put_bool(
    let json = match json.into_inner() {
       Value::Bool(val) => val,
       Value::Number(val) => {
-         let val = val.as_u64().ok_or(UserError::BadRequest(
-            BAD_BOOL_ERROR.to_string(),
-         ))?;
+         let val = val.as_u64().ok_or(UserError::BadBool)?;
          val != 0
       }
-      _ => {
-         return Err(UserError::BadRequest(
-            BAD_BOOL_ERROR.to_string(),
-         ))
-      }
+      _ => Err(UserError::BadBool)?,
    };
    let (user_id, index) = path.into_inner();
    if index >= 63 {

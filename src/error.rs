@@ -1,3 +1,4 @@
+use actix_web::http::StatusCode;
 use actix_web::{error, http::header::ContentType, HttpResponse};
 use argon2;
 use mail_send;
@@ -7,8 +8,8 @@ use thiserror::Error;
 
 #[derive(Debug, Error, Clone)]
 pub enum UserError {
-   #[error("Bad request: {0}.")]
-   BadRequest(String),
+   #[error("Expected true, false, 1, or 0")]
+   BadBool,
    #[error("Index out of range.")]
    IndexOutOfRange,
    #[error("An internal error occurred. Please try again later.")]
@@ -19,6 +20,27 @@ pub enum UserError {
    NotAuthorized,
    #[error("Requested resource was not found.")]
    NotFound,
+}
+
+impl error::ResponseError for UserError {
+   fn error_response(&self) -> HttpResponse {
+      HttpResponse::build(self.status_code())
+         .insert_header(ContentType::html())
+         .body(self.to_string())
+   }
+
+   fn status_code(&self) -> StatusCode {
+      match *self {
+         UserError::BadBool => StatusCode::BAD_REQUEST,
+         UserError::IndexOutOfRange => StatusCode::BAD_REQUEST,
+         UserError::InternalError(_) => {
+            StatusCode::INTERNAL_SERVER_ERROR
+         }
+         UserError::InvalidEmail => StatusCode::BAD_REQUEST,
+         UserError::NotAuthorized => StatusCode::UNAUTHORIZED,
+         UserError::NotFound => StatusCode::NOT_FOUND,
+      }
+   }
 }
 
 impl From<std::array::TryFromSliceError> for UserError {
@@ -100,28 +122,3 @@ impl From<mail_send::Error> for UserError {
       }
    }
 }
-
-impl error::ResponseError for UserError {
-   fn error_response(&self) -> HttpResponse {
-      HttpResponse::build(self.status_code())
-         .insert_header(ContentType::html())
-         .body(self.to_string())
-   }
-}
-
-// impl error::ResponseError for UserError {
-//    fn error_response(&self) -> HttpResponse {
-//       HttpResponse::build(self.status_code())
-//          .insert_header(ContentType::html())
-//          .body(self.to_string())
-//    }
-//
-//    fn status_code(&self) -> StatusCode {
-//       match *self {
-//          UserError::InternalError => {
-//             StatusCode::INTERNAL_SERVER_ERROR
-//          },
-//          _ => StatusCode::INTERNAL_SERVER_ERROR,
-//       }
-//    }
-// }

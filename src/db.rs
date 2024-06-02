@@ -28,20 +28,6 @@ pub fn add_user(
    Ok(user)
 }
 
-// pub fn get_users(conn: &Connection) -> Result<Vec<User>, UserError> {
-//    let mut stmt = conn.prepare_cached("SELECT * FROM user")?;
-//    let users: Vec<User> = stmt
-//       .query_map([], |row| {
-//          Ok(User {
-//             id: row.get("id")?,
-//             email: row.get("email")?,
-//             bools: row.get("bools")?,
-//          })
-//       })
-//       .and_then(Iterator::collect)?;
-//    Ok(users)
-// }
-
 pub fn get_user(
    conn: &Connection,
    user_id: usize,
@@ -98,46 +84,21 @@ pub fn add_token(
    token: &Token,
 ) -> Result<Token, UserError> {
    let mut stmt = conn.prepare_cached(
-      "INSERT INTO token ('id', 'expiry', 'user_id')
-      VALUES (?1, ?2, ?3)
+      "INSERT INTO token ('id', 'user_id')
+      VALUES (?1, ?2)
       RETURNING *",
    )?;
    let token = stmt.query_row(
-      (&token.id, &token.expiry, &token.user_id),
+      (&token.id, &token.user_id),
       |row| {
          Ok(Token {
             id: row.get("id")?,
-            expiry: row.get("expiry")?,
             user_id: row.get("user_id")?,
          })
       },
    )?;
    Ok(token)
 }
-
-// pub fn update_token(
-//    conn: &Connection,
-//    token: &Token,
-// ) -> Result<Token, UserError> {
-//    let mut stmt = conn.prepare_cached(
-//       "UPDATE token
-//       SET hash = ?2,
-//           expiry = ?3
-//       WHERE id = ?1
-//       RETURNING *",
-//    )?;
-//    let token = stmt.query_row(
-//       (&token.id, &token.hash, &token.expiry),
-//       |row| {
-//          Ok(Token {
-//             id: row.get("id")?,
-//             expiry: row.get("expiry")?,
-//             user_id: row.get("user_id")?,
-//          })
-//       },
-//    )?;
-//    Ok(token)
-// }
 
 pub fn get_token(
    conn: &Connection,
@@ -148,7 +109,6 @@ pub fn get_token(
    let token = stmt.query_row((id,), |row| {
       Ok(Token {
          id: row.get("id")?,
-         expiry: row.get("expiry")?,
          user_id: row.get("user_id")?,
       })
    })?;
