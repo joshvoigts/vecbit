@@ -1,0 +1,17 @@
+{% extends "layouts/default.html" %}
+
+{% block main %}
+<div id="header">
+   <h2>Signup / Login</h2>
+   <form id="signup" action="/start" method="post">
+      <ul class="center">
+         <li>
+         <label for="email">Email</label>
+         <input type="text" id="email" name="email" />
+         <input type="hidden" name="bools" value="0" />
+         </li>
+      </ul>
+      <button id="start-button" type="submit">Submit</button>
+   </form>
+</div>
+{% endblock main %}

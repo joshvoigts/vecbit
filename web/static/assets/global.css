@@ -1,0 +1,267 @@
+body {
+   background-color: rgb(250, 250, 250);
+   color: rgb(40, 40, 40);
+   font-family: system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+   line-height: 1.5;
+   margin: 0;
+   text-align: left;
+   -webkit-font-smoothing: antialiased;
+}
+
+.color {
+   color: hsl(40, 94%, 64%);
+}
+
+.wrap {
+   margin: 0 auto;
+   max-width: 1100px;
+   width: 90%;
+}
+
+#top-bar {
+   background-color: rgb(40, 40, 40);
+   height: 100px;
+   width: 100%;
+}
+
+#logo {
+   left: 35px;
+   position: relative;
+   top: 26px;
+   width: 150px;
+}
+
+input[type="text"] {
+   padding-left: 5px;
+}
+input[type="password"] {
+   padding-left: 5px;
+}
+
+table {
+   margin: 0 auto;
+   width: 100%;
+}
+
+#github {
+   border: 2px solid;
+   border-color: white;
+   border-radius: 7px;
+   float: right;
+   margin-top: 34px;
+   padding: 5px;
+   width: 65px;
+}
+
+#header {
+   margin: 0 auto;
+   text-align: center;
+}
+
+#content {
+   margin: 0 auto;
+   max-width: 550px;
+}
+
+#start-button {
+   background-color: hsl(40, 94%, 64%);
+   border: 10px solid;
+   border-color: hsl(40, 94%, 64%);
+   border-radius: 10px;
+   font-size: 1.25em;
+   font-weight: 800;
+   margin: 2em 0 1em 0;
+   padding: 0.1em 0.45em;
+}
+
+button {
+   cursor: pointer;
+}
+
+h1 {
+   font-size: 3em;
+   font-weight: 800;
+   margin: 2em 0 0.67em 0;
+   text-align: center;
+}
+
+pre {
+   font-size: 1.25em;
+}
+
+h2 {
+   font-size: 1.5em;
+   margin: 2em auto 1em auto;
+   text-align: center;
+}
+
+h2.left {
+   margin: 1em auto 1em auto;
+   text-align: left;
+}
+
+p.center {
+   font-size: 1.15em;
+   color: rgb(100, 100, 100);
+   margin: 0 auto;
+   max-width: 550px;
+   text-align: center;
+}
+
+ul.center {
+   font-size: 1em;
+   line-height: 3;
+   list-style-type: none;
+   margin: 1.5em auto;
+   width: 290px;
+   padding-right: 90px;
+   text-align: right;
+}
+
+ul.center li {
+   clear: both;
+}
+
+ul.center li label {
+   margin-right: 24px;
+}
+
+ul.center li input {
+   border: 1px solid;
+   border-color: rgb(200, 200, 200);
+   border-radius: 3px;
+   font-size: 1em;
+   height: 25px;
+   width: 200px;
+}
+
+/**
+ * tab panel widget
+ */
+.tabPanel-widget {
+  position: relative;
+  background: #DDDDDD;
+  border:2px solid #e8e8e8;
+  margin: 2em auto 0 auto;
+  max-width: 800px;
+}
+
+/**
+ * because labels come first in source order - we use z-index to move them in front of the headings
+ */
+.tabPanel-widget > label {
+  position: absolute;
+  z-index: 1;
+}
+
+/**
+ * labels and headings must share same values so grouping declarations in this rule prevents async edits (risk of breakage)
+ * line-height == height -> vertical centering
+ * the width dictates the offset for all headings but the first one: left offset = width * number of previous heading(s)
+ * note that width and offset of label/heading pair can be customized if necessary
+ */
+
+.tabPanel-widget > label,
+.tabPanel-widget > h2 {
+  font-size: .8em;
+  width: 9em;
+  height: 3em;
+  line-height: 3em;
+}
+
+/**
+ * position:relative is for the markers (the down arrow in tabs)
+ */
+.tabPanel-widget > h2 {
+  position: relative;
+  margin: 0;
+  text-align: center;
+  background: #e9e9e9;
+  color: #b0b0b0;
+}
+
+.tabPanel-widget > label {
+  border-right: 1px solid #fff;  
+}
+
+/**
+ * all first level labels and headings after the very first ones 
+ */
+.tabPanel-widget > label ~ label,
+.tabPanel-widget > h2 ~ h2 {
+  position: absolute;
+  top: 0;
+}
+
+
+/**
+ * We target all the label/heading pairs
+ * we increment the :nth-child() params by 4 as well as the left value (according to "tab" width)
+ */
+
+.tabPanel-widget label:nth-child(1),
+.tabPanel-widget h2:nth-child(3) {
+  left: 0em;
+}
+
+.tabPanel-widget label:nth-child(5),
+.tabPanel-widget h2:nth-child(7) {
+  left: 9em;
+}
+
+.tabPanel-widget label:nth-child(9),
+.tabPanel-widget h2:nth-child(11) {
+  left: 18em;
+}
+
+/**
+ * we visually hide all the panels
+ * https://developer.yahoo.com/blogs/ydn/clip-hidden-content-better-accessibility-53456.html
+ */
+.tabPanel-widget input + h2 + div {
+  position: absolute !important;
+  clip: rect(1px, 1px, 1px, 1px);
+  padding:0 !important;
+  border:0 !important;
+  height: 1px !important; 
+  width: 1px !important; 
+  overflow: hidden;
+}
+/**
+ * we reveal a panel depending on which control is selected 
+ */
+.tabPanel-widget input:checked + h2 + div {
+  position: static !important;
+  padding: 1.5em 2.5em !important;
+  height: auto !important; 
+  width: auto !important; 
+}
+
+/**
+ * shows a hand cursor only to pointing device users
+ */
+.tabPanel-widget label:hover {
+  cursor: pointer;
+}
+
+.tabPanel-widget > div {
+  background: #ffffff;
+  border: 1px solid #f0f0f0;
+  padding: 1em;
+}
+
+/**
+ * we hide radio buttons and also remove them from the flow
+ */
+.tabPanel-widget input[name="tabs"] {
+  opacity: 0;
+  position: absolute;
+}
+
+/**
+ * visual cue of the selection
+ */
+.tabPanel-widget input[name="tabs"]:checked + h2 {
+  background: #ffffff;
+  color: #333333;
+}

@@ -1,0 +1,18 @@
+{% extends "layouts/default.html" %}
+
+{% block main %}
+<div id="content">
+   <h2>Bools</h2>
+   <table>
+      <tr>
+      {% for i in range(end=64) %}
+         {% if bools %}
+         <td>{{ bools[i] }}</td>
+         {% else %}
+         <td>0</td>
+         {% endif %}
+      {% endfor %}
+      </tr>
+   </table>
+</div>
+{% endblock main %}
