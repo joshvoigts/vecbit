@@ -16,31 +16,31 @@ pub struct AppConfig {
 
 impl AppConfig {
    pub fn new_from_env() -> Self {
-      let bind_address = std::env::var("STAT_BIND_ADDRESS")
-         .expect("STAT_BIND_ADDRESS must be set");
-      let bind_port: u16 = std::env::var("STAT_BIND_PORT")
-         .expect("STAT_BIND_PORT must be set")
+      let bind_address = std::env::var("VECB_BIND_ADDRESS")
+         .expect("VECB_BIND_ADDRESS must be set");
+      let bind_port: u16 = std::env::var("VECB_BIND_PORT")
+         .expect("VECB_BIND_PORT must be set")
          .parse()
-         .expect("STAT_BIND_PORT must be a u16");
-      let db_path = std::env::var("STAT_DB_PATH")
-         .expect("STAT_DB_PATH must be set");
+         .expect("VECB_BIND_PORT must be a u16");
+      let db_path = std::env::var("VECB_DB_PATH")
+         .expect("VECB_DB_PATH must be set");
       let environment =
-         std::env::var("STAT_ENV").expect("STAT_ENV must be set");
+         std::env::var("VECB_ENV").expect("VECB_ENV must be set");
       let session_master_key = Key::from(
          BASE64_STANDARD
             .decode(
-               std::env::var("SESSION_MASTER_KEY")
+               std::env::var("VECB_SESSION_MASTER_KEY")
                   .expect("SESSION_MASTER_KEY must be set"),
             )
             .expect("SESSION_MASTER_KEY invalid")
             .as_slice(),
       );
-      let smtp_email = std::env::var("STAT_SMTP_EMAIL")
-         .expect("STAT_SMTP_EMAIL must be set");
-      let smtp_password = std::env::var("STAT_SMTP_PASSWORD")
-         .expect("STAT_SMTP_PASSWORD must be set");
-      let static_path = std::env::var("STAT_STATIC_PATH")
-         .expect("STAT_STATIC_PATH must be set");
+      let smtp_email = std::env::var("VECB_SMTP_EMAIL")
+         .expect("VECB_SMTP_EMAIL must be set");
+      let smtp_password = std::env::var("VECB_SMTP_PASSWORD")
+         .expect("VECB_SMTP_PASSWORD must be set");
+      let static_path = std::env::var("VECB_STATIC_PATH")
+         .expect("VECB_STATIC_PATH must be set");
 
       AppConfig {
          cookie_ttl: 60 * 60 * 24 * 30,

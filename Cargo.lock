@@ -2253,39 +2253,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "6980e8d7511241f8acf4aebddbb1ff938df5eebe98691418c4468d0b72a96a67"
 
 [[package]]
-name = "status"
-version = "0.1.0"
-dependencies = [
- "actix",
- "actix-files",
- "actix-service",
- "actix-session",
- "actix-web",
- "aes-gcm",
- "argon2",
- "base64 0.22.1",
- "bitvec",
- "dotenvy",
- "env_logger",
- "futures-util",
- "lazy_static",
- "log",
- "mail-builder",
- "mail-send",
- "r2d2",
- "r2d2_sqlite",
- "rand",
- "rusqlite",
- "serde",
- "serde_json",
- "syntect",
- "tera",
- "thiserror",
- "time",
- "uuid",
-]
-
-[[package]]
 name = "subtle"
 version = "2.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2668,6 +2635,39 @@ name = "vcpkg"
 version = "0.2.15"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "accd4ea62f7bb7a82fe23066fb0957d48ef677f6eeb8215f372f52e48bb32426"
+
+[[package]]
+name = "vecbit"
+version = "0.1.0"
+dependencies = [
+ "actix",
+ "actix-files",
+ "actix-service",
+ "actix-session",
+ "actix-web",
+ "aes-gcm",
+ "argon2",
+ "base64 0.22.1",
+ "bitvec",
+ "dotenvy",
+ "env_logger",
+ "futures-util",
+ "lazy_static",
+ "log",
+ "mail-builder",
+ "mail-send",
+ "r2d2",
+ "r2d2_sqlite",
+ "rand",
+ "rusqlite",
+ "serde",
+ "serde_json",
+ "syntect",
+ "tera",
+ "thiserror",
+ "time",
+ "uuid",
+]
 
 [[package]]
 name = "version_check"
