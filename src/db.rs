@@ -65,7 +65,7 @@ pub fn set_user(
    user: User,
 ) -> Result<User, UserError> {
    let mut stmt = conn.prepare_cached(
-      "UPDATE user SET email = ?2, bools = ?3,
+      "UPDATE user SET email = ?2, bools = ?3
          WHERE user.id = ?1 RETURNING *",
    )?;
    let user =

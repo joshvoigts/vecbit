@@ -5,6 +5,7 @@ use actix::Arbiter;
 use actix_session::Session;
 use actix_web::dev::ConnectionInfo;
 use actix_web::http::uri;
+use actix_web::HttpRequest;
 
 use aes_gcm::{
    aead::{Aead, AeadCore, KeyInit, OsRng},
@@ -17,6 +18,22 @@ use mail_send::SmtpClientBuilder;
 use rand::{distributions::Alphanumeric, Rng};
 use tera::Context;
 
+pub fn verify_request(
+   req: &HttpRequest,
+   conn: &Connection,
+) -> Result<usize, UserError> {
+   let bearer = req
+      .headers()
+      .get("Authorization")
+      .ok_or(UserError::NotAuthorized)?;
+   let token = bearer.to_str()?
+      .split("Bearer ")
+      .collect::<Vec<_>>()
+      .get(1)
+      .ok_or(UserError::NotAuthorized)?.to_string();
+   verify_token(token, conn)
+}
+
 pub fn verify(
    session: &Session,
    conn: &Connection,
@@ -24,9 +41,15 @@ pub fn verify(
    let sess_token = session
       .get::<String>("token")?
       .ok_or(UserError::NotAuthorized)?;
+   verify_token(sess_token, conn)
+}
 
+pub fn verify_token(
+   token: String,
+   conn: &Connection,
+) -> Result<usize, UserError> {
    let db_token =
-      db::get_token(&conn, &sess_token).map_err(|err| match err {
+      db::get_token(&conn, &token).map_err(|err| match err {
          UserError::NotFound => UserError::NotAuthorized,
          e => e,
       })?;
@@ -62,7 +85,8 @@ pub async fn send_magic_email(
    context.insert("token_link", &link);
 
    let email = email.to_string();
-   let html_body = data.tera.render("email/magic_link.html", &context)?;
+   let html_body =
+      data.tera.render("email/magic_link.html", &context)?;
    let smtp_email = data.smtp_email.clone();
    let smtp_password = data.smtp_password.clone();
 
@@ -71,17 +95,14 @@ pub async fn send_magic_email(
       .to(email.clone())
       .subject("Login to vecbit")
       .html_body(html_body);
-//       .text_body("Click the link to login: "); // TODO
+   //       .text_body("Click the link to login: "); // TODO
 
    Arbiter::new().spawn(async move {
       // Connect to the SMTP submissions port, upgrade to TLS and
       // authenticate using the provided credentials.
       let res = SmtpClientBuilder::new("smtp.gmail.com", 587)
          .implicit_tls(false)
-         .credentials((
-            smtp_email.as_str(),
-            smtp_password.as_str(),
-         ))
+         .credentials((smtp_email.as_str(), smtp_password.as_str()))
          .connect()
          .await;
       match res {

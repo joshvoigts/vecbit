@@ -1,18 +1,25 @@
-{% extends "layouts/default.html" %}
+{% extends "layouts/default_no_wrap.html" %}
 
-{% block main %}
-<div id="content">
-   <h2>Bools</h2>
-   <table>
-      <tr>
-      {% for i in range(end=64) %}
-         {% if bools %}
-         <td>{{ bools[i] }}</td>
-         {% else %}
-         <td>0</td>
-         {% endif %}
-      {% endfor %}
-      </tr>
-   </table>
+{% block main_no_wrap %}
+<div id="content-split">
+   <div id="content-split-1">
+      <ul>
+         <li><a href="/">Introduction</a></li>
+         <li><a href="/settings">Settings</a></li>
+         <li><a href="/get-bits">Get all bits</a></li>
+         <li><a href="/get-bit">Get a bit</a></li>
+         <li><a href="/set-bit">Set a bit</a></li>
+      </ul>
+   </div>
+   <div id="content-split-2">
+      {% include "snippets/bools.html" %}
+      <h1 class="left">Bool as a service</h1>
+      <p>Set&nbsp;or&nbsp;unset a vector of 63 bits via API. A simple service for adding state to any project.</p>
+      <p>When using the code samples included in this API documentation, requests should be sent with a Content-Type of application/json.</p>
+      <h2 class="left">Authentication</h2>
+      <p>Use of the API requires an API access token. To request this token, go to "Settings" in the menu to the left and "Create new access token".</p>
+      <p>To make calls to the API, send the API token in the Authorization HTTP header using the Bearer authentication scheme.</p>
+      <pre>curl -H "Authorization: Bearer aTwSv..." https://vecbit/api/v1/bools
+   </div>
 </div>
-{% endblock main %}
+{% endblock main_no_wrap %}

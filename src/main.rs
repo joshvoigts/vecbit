@@ -1,6 +1,6 @@
 // #![cfg_attr(debug_assertions, allow(dead_code, unused_imports))]
 
-use crate::config::AppConfig;
+extern crate vecbit;
 use actix_files::Files;
 use actix_session::{
    config::PersistentSession, storage::CookieSessionStore,
@@ -8,24 +8,15 @@ use actix_session::{
 };
 use actix_web::cookie::time::Duration;
 use actix_web::{middleware, web, App, HttpServer};
-use db::Pool;
 use r2d2_sqlite::SqliteConnectionManager;
 use std::env;
 use std::io;
 use tera::Tera;
-
-mod api;
-mod app;
-mod auth;
-mod config;
-mod db;
-mod error;
-mod init;
-mod model;
-mod p;
-mod responder;
-mod ui;
-mod vecbit;
+use vecbit::app::AppConfig;
+use vecbit::db::Pool;
+use vecbit::app;
+use vecbit::route;
+use vecbit::init;
 
 #[actix_web::main]
 async fn main() -> io::Result<()> {
@@ -75,6 +66,7 @@ async fn main() -> io::Result<()> {
       App::new()
          .app_data(web::Data::new(app_data.clone()))
          .wrap(middleware::Logger::default())
+         .wrap(middleware::Compress::default())
          .wrap(
             SessionMiddleware::builder(
                CookieSessionStore::default(),
@@ -87,7 +79,7 @@ async fn main() -> io::Result<()> {
             .cookie_secure(config.environment != "development")
             .build(),
          )
-         .configure(app::service_config)
+         .configure(route::service_config)
          .service(
             Files::new("/", config.static_path.clone())
                // .index_file("site/index.html")

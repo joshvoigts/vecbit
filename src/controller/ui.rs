@@ -1,17 +1,19 @@
 use crate::app::AppData;
 use crate::auth;
 use crate::auth::{generate_token, send_magic_email};
+use crate::bits;
 use crate::db;
 use crate::error::UserError;
 use crate::model::MagicLink;
 use crate::model::Start;
 use crate::model::Token;
 use crate::model::User;
+use crate::p;
 use crate::responder::Html;
-use crate::vecbit;
 use actix_session::Session;
 use actix_web::dev::ConnectionInfo;
-use actix_web::{web, Responder};
+use actix_web::{web, HttpResponse, Responder};
+use serde_json::Value;
 use tera::Context;
 
 pub async fn post_start(
@@ -129,7 +131,39 @@ pub async fn get_user(
    let db_user = db::get_user(&conn, user_id)?;
 
    let mut context = Context::new();
-   let bools = vecbit::get_bits(&db_user.bools);
+   let bools = bits::get_bits(&db_user.bools);
    context.insert("bools", &bools);
    Ok(Html(data.tera.render("site/user.html", &context)?))
+}
+
+pub async fn put_bool(
+   data: web::Data<AppData>,
+   form: web::Form<Value>,
+   path: web::Path<usize>,
+   session: Session,
+) -> Result<impl Responder, UserError> {
+   let obj = form.into_inner();
+   let json = obj.get("new").ok_or(UserError::UnexpectedInput)?;
+   let json = match json {
+      Value::String(val) => {
+         let val =
+            val.parse::<u64>().map_err(|_| UserError::BadBool)?;
+         val != 0
+      }
+      _ => Err(UserError::BadBool)?,
+   };
+   let index = path.into_inner();
+   if index >= 63 {
+      return Err(UserError::IndexOutOfRange);
+   }
+   let conn = db::get_conn(&data.pool)?;
+   let user_id = auth::verify(&session, &conn)?;
+   let mut db_user = db::get_user(&conn, user_id)?;
+   bits::set_bit(&mut db_user.bools, index, json);
+   db_user = db::set_user(&conn, db_user)?;
+
+   let mut context = Context::new();
+   let bools = bits::get_bits(&db_user.bools);
+   context.insert("bools", &bools);
+   Ok(Html(data.tera.render("snippets/bools.html", &context)?))
 }

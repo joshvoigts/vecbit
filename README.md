@@ -27,3 +27,7 @@ Create a `.env` file:
 Create the db:
 
     cargo run init_db
+
+Run:
+
+    cargo run

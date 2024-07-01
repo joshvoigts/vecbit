@@ -20,6 +20,8 @@ pub enum UserError {
    NotAuthorized,
    #[error("Requested resource was not found.")]
    NotFound,
+   #[error("Unexpected input.")]
+   UnexpectedInput,
 }
 
 impl error::ResponseError for UserError {
@@ -39,7 +41,14 @@ impl error::ResponseError for UserError {
          UserError::InvalidEmail => StatusCode::BAD_REQUEST,
          UserError::NotAuthorized => StatusCode::UNAUTHORIZED,
          UserError::NotFound => StatusCode::NOT_FOUND,
+         UserError::UnexpectedInput => StatusCode::BAD_REQUEST,
       }
+   }
+}
+
+impl From<actix_web::http::header::ToStrError> for UserError {
+   fn from(error: actix_web::http::header::ToStrError) -> Self {
+      UserError::InternalError(error.to_string())
    }
 }
 

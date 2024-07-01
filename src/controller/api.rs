@@ -1,8 +1,9 @@
+use crate::auth;
 use crate::app::AppData;
 use crate::db;
 use crate::error::UserError;
-use crate::vecbit;
-use actix_web::{web, HttpResponse};
+use crate::bits;
+use actix_web::{web, HttpRequest, HttpResponse};
 use serde_json::Value;
 
 // async fn verify_user(user: User) -> Result<(), Error> {
@@ -36,7 +37,7 @@ pub async fn get_bool(
    let conn = db::get_conn(&data.pool)?;
    let db_user = db::get_user(&conn, user_id)?;
    //    verify_user(db_user)?;
-   let bit = vecbit::get_bit(&db_user.bools, index)?;
+   let bit = bits::get_bit(&db_user.bools, index)?;
    Ok(HttpResponse::Ok().json(bit))
 }
 
@@ -48,14 +49,15 @@ pub async fn get_bools(
    let conn = db::get_conn(&data.pool)?;
    let db_user = db::get_user(&conn, user_id)?;
    //    verify_user(db_user)?;
-   let bools = vecbit::get_bits(&db_user.bools);
+   let bools = bits::get_bits(&db_user.bools);
    Ok(HttpResponse::Ok().json(bools))
 }
 
 pub async fn put_bool(
    data: web::Data<AppData>,
-   path: web::Path<(usize, usize)>,
+   path: web::Path<usize>,
    json: web::Json<Value>,
+   req: HttpRequest,
 ) -> Result<HttpResponse, UserError> {
    let json = match json.into_inner() {
       Value::Bool(val) => val,
@@ -65,14 +67,15 @@ pub async fn put_bool(
       }
       _ => Err(UserError::BadBool)?,
    };
-   let (user_id, index) = path.into_inner();
+   let index = path.into_inner();
    if index >= 63 {
       return Err(UserError::IndexOutOfRange);
    }
    let conn = db::get_conn(&data.pool)?;
+   let user_id = auth::verify_request(&req, &conn)?;
    let mut db_user = db::get_user(&conn, user_id)?;
    //       verify_user(db_user)?;
-   vecbit::set_bit(&mut db_user.bools, index, json);
+   bits::set_bit(&mut db_user.bools, index, json);
    db::set_user(&conn, db_user)?;
    Ok(HttpResponse::Ok().into())
 }

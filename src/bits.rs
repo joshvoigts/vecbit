@@ -4,15 +4,23 @@ use crate::error::UserError;
 pub fn get_bits(integer: &u64) -> Vec<u64> {
    let bits = integer.view_bits::<Lsb0>();
    let mut bools = Vec::new();
-   if let Some(last_one) = bits.last_one() {
-      for bit in bits[0..last_one + 1].iter() {
-         if *bit {
-            bools.push(1);
-         } else {
-            bools.push(0);
-         }
+   for bit in bits.iter() {
+      if *bit {
+         bools.push(1);
+      } else {
+         bools.push(0);
       }
    }
+   bools.pop();
+//    if let Some(last_one) = bits.last_one() {
+//       for bit in bits[0..last_one + 1].iter() {
+//          if *bit {
+//             bools.push(1);
+//          } else {
+//             bools.push(0);
+//          }
+//       }
+//    }
    return bools;
 }
 

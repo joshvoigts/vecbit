@@ -1,0 +1,5 @@
+<form id="bools">
+   {% for bool in bools %}
+   <input hx-put="/bools/{{ loop.index0 }}" value="{{ bool }}" hx-vals='{"new": {{ 1 - bool }}}' hx-target="#bools" class="bool" type="submit"/>
+   {% endfor %}
+</form>
