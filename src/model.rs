@@ -23,3 +23,9 @@ pub struct Token {
    pub id: String,
    pub user_id: usize,
 }
+
+#[derive(Clone, Debug, Serialize, Deserialize)]
+pub struct AccessToken {
+   pub id: String,
+   pub user_id: usize,
+}

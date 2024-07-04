@@ -1,0 +1,18 @@
+{% extends "layouts/default_no_wrap.html" %}
+
+{% block main %}
+<div id="content-split">
+   <div id="content-split-1">
+      <ul>
+         <li><a href="/">Introduction</a></li>
+         <li><a href="/settings">Settings</a></li>
+         <li><a href="/get-bits">Get all bits</a></li>
+         <li><a href="/get-bit">Get a bit</a></li>
+         <li><a href="/set-bit">Set a bit</a></li>
+      </ul>
+   </div>
+   <div id="content-split-2">
+      {% block content %}{% endblock content %}
+   </div>
+</div>
+{% endblock main %}

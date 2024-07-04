@@ -4,7 +4,7 @@ An app for offering "bools as a service".
 
 ## Why?
 
-A good excuse for learning how to implement rust web APIs and
+An excuse for learning how to implement rust web APIs and
 web API authentication.
 
 ## Setup

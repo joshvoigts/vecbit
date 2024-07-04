@@ -1,4 +1,5 @@
 use crate::error::UserError;
+use crate::model::AccessToken;
 use crate::model::Token;
 use crate::model::User;
 
@@ -88,15 +89,13 @@ pub fn add_token(
       VALUES (?1, ?2)
       RETURNING *",
    )?;
-   let token = stmt.query_row(
-      (&token.id, &token.user_id),
-      |row| {
+   let token =
+      stmt.query_row((&token.id, &token.user_id), |row| {
          Ok(Token {
             id: row.get("id")?,
             user_id: row.get("user_id")?,
          })
-      },
-   )?;
+      })?;
    Ok(token)
 }
 
@@ -113,4 +112,22 @@ pub fn get_token(
       })
    })?;
    Ok(token)
+}
+
+pub fn get_access_tokens(
+   conn: &Connection,
+   user_id: &String,
+) -> Result<Vec<AccessToken>, UserError> {
+   let mut stmt = conn.prepare_cached(
+      "SELECT * FROM access_token WHERE access_token.user_id = ?1",
+   )?;
+   let mut tokens = Vec::new();
+   let mut rows = stmt.query((user_id,))?;
+   while let Some(row) = rows.next()? {
+      tokens.push(AccessToken {
+         id: row.get("id")?,
+         user_id: row.get("user_id")?,
+      });
+   };
+   Ok(tokens)
 }

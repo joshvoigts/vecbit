@@ -1,25 +1,14 @@
-{% extends "layouts/default_no_wrap.html" %}
+{% extends "layouts/default_split.html" %}
 
-{% block main_no_wrap %}
-<div id="content-split">
-   <div id="content-split-1">
-      <ul>
-         <li><a href="/">Introduction</a></li>
-         <li><a href="/settings">Settings</a></li>
-         <li><a href="/get-bits">Get all bits</a></li>
-         <li><a href="/get-bit">Get a bit</a></li>
-         <li><a href="/set-bit">Set a bit</a></li>
-      </ul>
-   </div>
-   <div id="content-split-2">
-      {% include "snippets/bools.html" %}
+{% block content %}
       <h1 class="left">Bool as a service</h1>
-      <p>Set&nbsp;or&nbsp;unset a vector of 63 bits via API. A simple service for adding state to any project.</p>
-      <p>When using the code samples included in this API documentation, requests should be sent with a Content-Type of application/json.</p>
-      <h2 class="left">Authentication</h2>
-      <p>Use of the API requires an API access token. To request this token, go to "Settings" in the menu to the left and "Create new access token".</p>
+      <p>Set&nbsp;or&nbsp;unset a vector of 63 bits by API.</p>
+      <h2>Why?</h2>
+      <p>A silly side project for giving everyone in the world a free bool on my cheap $5 VPS. Also, as an excuse for learning API design and authentication with <a href="https://abevoelker.com/skipping-the-database-with-stateless-tokens-a-hidden-rails-gem-and-a-useful-web-technique/#drawbacks">stateless magic links</a>. See code on <a href="https://github.com/joshvoigts/vecbit">github</a>.</p>
+      <h2 class="left">Quick start</h2>
+      <p>Note that when using the code samples included in this documentation, requests should be sent with a Content-Type of <span class="mono">application/json</span>.</p>
+      <h3 class="left">Authentication</h3>
+      <p>Use of the API requires an API access token. To request this token, go to <a href="/settings">Settings</a> in the menu to the left and "Create new access token".</p>
       <p>To make calls to the API, send the API token in the Authorization HTTP header using the Bearer authentication scheme.</p>
-      <pre>curl -H "Authorization: Bearer aTwSv..." https://vecbit/api/v1/bools
-   </div>
-</div>
-{% endblock main_no_wrap %}
+      <pre>curl -H "Authorization: Bearer aTwSv..." https://vecbit/api/v1/bools</pre>
+{% endblock content %}

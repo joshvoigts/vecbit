@@ -37,6 +37,11 @@ pub fn init_db() {
             bools INTEGER NOT NULL DEFAULT 0
          );
 
+         CREATE TABLE access_token {
+            id TEXT PRIMARY KEY,
+            user_id INTEGER NOT NULL REFERENCES user
+         };
+
          CREATE TABLE token (
             id TEXT PRIMARY KEY,
             user_id INTEGER NOT NULL REFERENCES user

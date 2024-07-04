@@ -8,105 +8,6 @@ body {
    -webkit-font-smoothing: antialiased;
 }
 
-.color {
-   color: hsl(40, 94%, 64%);
-}
-
-.wrap {
-   margin: 0 auto;
-   max-width: 1100px;
-   width: 90%;
-}
-
-#top-bar {
-   background-color: rgb(40, 40, 40);
-   height: 80px;
-   width: 100%;
-}
-
-#logo {
-   left: 35px;
-   position: relative;
-   top: 23px;
-   width: 120px;
-}
-
-input[type="text"] {
-   padding-left: 5px;
-}
-input[type="password"] {
-   padding-left: 5px;
-}
-
-#github {
-   border: 2px solid;
-   border-color: white;
-   border-radius: 7px;
-   float: right;
-   margin-top: 34px;
-   padding: 5px;
-   width: 65px;
-}
-
-#header {
-   margin: 0 auto;
-   text-align: center;
-}
-
-#content {
-   margin: 0 auto;
-   max-width: 550px;
-}
-
-#content-split-1 {
-   border-right: 1px solid;
-   border-color: rgb(215, 215, 215);
-   color: grey;
-   height: 100%;
-   position: absolute;
-   width: 200px;
-}
-
-ul {
-   list-style-type: none;
-   padding: 0;
-}
-
-ul li {
-   padding: 4px 10px;
-}
-
-ul li a {
-   border: 5px solid;
-   border-color: rgb(250, 250, 250);
-   border-radius: 5px;
-   color: rgb(96, 103, 112);
-   display: block;
-   font-weight: 500;
-   padding: 0 6px;
-   text-decoration: none;
-}
-
-ul li a:hover {
-   background-color: rgb(240, 240, 240);
-   border-color: rgb(240, 240, 240);
-}
-
-#content-split-2 {
-   left: 225px;
-   right: 0;
-   position: absolute;
-}
-
-#bools {
-   cursor: default;
-   margin: 24px auto;
-}
-
-.bool-pair {
-   display: inline-block;
-}
-
 .bool {
    background-color: white;
    border: 1px solid;
@@ -128,6 +29,78 @@ ul li a:hover {
    color: white;
 }
 
+.center {
+   margin: 0 auto;
+   max-width: 550px;
+   text-align: center;
+}
+
+.color {
+   color: hsl(40, 94%, 64%);
+}
+
+.mono {
+   color: rgb(40, 40, 40);
+   background-color: rgb(220, 220, 220);
+   font-family: monospace;
+   padding: 0 3px;
+}
+
+#bools {
+   cursor: default;
+   margin: 24px auto;
+}
+
+#content-center {
+   margin: 0 auto;
+   max-width: 550px;
+   text-align: center;
+}
+
+#content-split {
+   position: absolute;
+   bottom: 0;
+   left: 0;
+   right: 0;
+   top: 80px;
+}
+
+#content-split-1 {
+   bottom: 0;
+   color: grey;
+   padding-top: 80px;
+   position: fixed;
+   top: 0;
+   width: 200px;
+}
+
+#content-split-2 {
+   border-left: 1px solid;
+   border-color: rgb(215, 215, 215);
+   left: 200px;
+   right: 0;
+   padding-left: 35px;
+   padding-right: 35px;
+   position: absolute;
+}
+
+#logo {
+   left: 35px;
+   position: relative;
+   top: 23px;
+   width: 120px;
+}
+
+#github {
+   border: 2px solid;
+   border-color: white;
+   border-radius: 7px;
+   float: right;
+   margin-top: 34px;
+   padding: 5px;
+   width: 65px;
+}
+
 #start-button {
    background-color: hsl(40, 94%, 64%);
    border: 10px solid;
@@ -139,48 +112,97 @@ ul li a:hover {
    padding: 0.1em 0.45em;
 }
 
+#top-bar {
+   background-color: rgb(40, 40, 40);
+   height: 80px;
+   width: 100%;
+}
+
+a {
+   color: rgb(40, 40, 40);
+   text-decoration: none;
+}
+
+h1 {
+   font-size: 2.5em;
+   font-weight: 800;
+   line-height: 1;
+   margin: 1em auto 0.25em auto;
+}
+h1.center {
+   margin: 2em 0 0.67em 0;
+   text-align: center;
+}
+
+h2 {
+   margin: 1.5em auto 0.75em auto;
+   text-align: left;
+}
+
+h3 {
+   font-weight: 600;
+   margin: 1.5em auto 0.75em auto;
+}
+
+input[type="text"] {
+   padding-left: 5px;
+}
+input[type="password"] {
+   padding-left: 5px;
+}
 input[type=submit] {
    cursor: pointer;
 }
 
-h1 {
-   font-size: 3em;
-   font-weight: 800;
-   margin: 2em 0 0.67em 0;
-   text-align: center;
-}
-h1.left {
-   font-size: 2.5em;
-   font-weight: 600;
-   margin: 1em auto 0.5em auto;
-   text-align: left;
-}
-
-pre {
-   font-size: 1.25em;
-}
-
-h2 {
-   font-size: 1.5em;
-   margin: 2em auto 1em auto;
-   text-align: center;
-}
-
-h2.left {
-   margin: 1em auto 1em auto;
-   text-align: left;
-}
-
 p {
-   margin: 0 auto 1em auto;
+   margin-top: 0;
+   margin-bottom: 1em;
+   max-width: 700px;
+}
+
+p a {
+   background-color: hsl(40, 94%, 64%);
 }
 
 p.center {
    font-size: 1.15em;
    color: rgb(100, 100, 100);
-   margin: 0 auto;
-   max-width: 550px;
-   text-align: center;
+}
+
+pre {
+   background-color: white;
+   border-top: 1px solid;
+   border-color: rgb(215, 215, 215);
+   font-size: 1.25em;
+   line-height: 1;
+   height: auto;
+   overflow: scroll;
+   padding: 17px 20px;
+   max-width: 700px;
+}
+
+ul {
+   list-style-type: none;
+   padding: 0;
+}
+
+ul li {
+   padding: 4px 10px;
+}
+
+ul li a {
+   border: 5px solid;
+   border-color: rgb(250, 250, 250);
+   border-radius: 5px;
+   color: rgb(96, 103, 112);
+   display: block;
+   font-weight: 500;
+   padding: 0 6px;
+}
+
+ul li a:hover {
+   background-color: rgb(240, 240, 240);
+   border-color: rgb(240, 240, 240);
 }
 
 ul.center {
